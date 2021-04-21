@@ -10,22 +10,22 @@ import {
 } from "react-bootstrap";
 const Header = () => {
     return (
-        <div>
+        <div className="mb-3">
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+                    <Navbar.Brand >React-Bootstrap</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link>
+                            <Nav className='mr-2'>
                                 <Link to="/about">About</Link>
-                            </Nav.Link>
-                            <Nav.Link>
+                            </Nav>
+                            <Nav className='mr-2'>
                                 <Link to="/">Home</Link>
-                            </Nav.Link>
-                            <Nav.Link>
+                            </Nav>
+                            <Nav className='mr-2'>
                                 <Link to="/ProjectList">Projects</Link>
-                            </Nav.Link>
+                            </Nav>
                         </Nav>
                         <Form inline>
                             <FormControl

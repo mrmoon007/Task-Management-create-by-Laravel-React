@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container } from "react-bootstrap";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Header from "./layouts/Header";
@@ -8,9 +9,9 @@ import ProjectLisr from "./pages/projects/ProjectList";
 
 
 function App() {
-    
+
     return (
-        <div >
+        <Container >
             <Router>
                 <Header/>
                 <div>
@@ -29,7 +30,7 @@ function App() {
                 </div>
             </Router>
 
-        </div>
+        </Container>
     );
 }
 

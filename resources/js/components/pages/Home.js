@@ -2,7 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 const Home = () => {
     return (
-        <Container>
+        <>
             <div className="row justify-content-center">
                 <div className="col-md-12">
                     <div className="card">
@@ -12,7 +12,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-        </Container>
+        </>
      );
 }
 
