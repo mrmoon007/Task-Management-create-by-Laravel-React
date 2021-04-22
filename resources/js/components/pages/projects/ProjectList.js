@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Card, Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 const ProjectLisr = () => {
     const [dataList, setDataList] = useState([]);
     useEffect(() => {
@@ -18,16 +19,27 @@ const ProjectLisr = () => {
     }, []);
     return (
         <>
-            <h2>Project Lists</h2>
+            <div className="header-part">
+                <div className="float-left">
+                    <h2>
+                        Project Lists{" "}
+                        <Badge variant="success">{dataList.length}</Badge>
+                    </h2>
+                </div>
+                <div className="float-right">
+                    <Link to="create" className="btn btn-info">
+                        + Create New
+                    </Link>
+                </div>
+                <div className="clearfix"></div>
+            </div>
             {dataList.map((item, index) => (
-                <Card key={index}>
+                <Card key={index} className="mt-3">
                     <Card.Header>
-                       {item.name} <Badge variant="success">9</Badge>
+                        {item.name} <Badge variant="success">1</Badge>
                     </Card.Header>
                     <Card.Body>
-                        <Card.Text>
-                            {item.description}
-                        </Card.Text>
+                        <Card.Text>{item.description}</Card.Text>
                         <Button variant="primary" className="mr-2">
                             Edit
                         </Button>
