@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Card } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-import { getProjectDetails } from "../../../services/ProjectService";
+
+
+import TaskCreate from "../tasks/TaskCreate";
+
+
 const ProjectView = () => {
     const [project, setProject] = useState({});
     const [taskList, setTaskList] = useState([]);
+    const [toggleAddTask, setToggleAddTask] = useState(false);
 
     let { id } = useParams();
     console.log("route para", id);
@@ -30,6 +35,21 @@ const ProjectView = () => {
             });
     };
 
+    const addTask = () => {
+        if (toggleAddTask === false) {
+            setToggleAddTask(true);
+        } else {
+            setToggleAddTask(false);
+        }
+
+    };
+
+    const onCompleteTask=(value)=>{
+        addTask();
+        const cloneTaskList=taskList;
+        cloneTaskList.push(value);
+        setTaskList(cloneTaskList);
+    }
     // let { id } = useParams();
     // console.log('route para',id)
     return (
@@ -37,36 +57,46 @@ const ProjectView = () => {
             <div className="header-part">
                 <div className="float-left">
                     <h2>
-                         {project.name}
+                        {project.name}
                         <Badge variant="success">{taskList.length}</Badge>
                     </h2>
                 </div>
                 <div className="float-right">
-                    <Link to="create" className="btn btn-info">
-                        + Create New Task
+                    <Link to="create" className="btn btn-success mr-2">
+                        Edit
                     </Link>
+                    <button className="btn btn-info" onClick={() => addTask()}>
+                        {!toggleAddTask && <span>+ Add New Task</span>}
+                        {toggleAddTask && <span>Cancle</span>}
+                    </button>
                 </div>
                 <div className="clearfix"></div>
-                <div>
-                    {project.description}
-                </div>
+                <div>{project.description}</div>
+
+                {toggleAddTask && (
+                    <TaskCreate
+                    project_id={id}
+                    onCompleteTask={onCompleteTask}
+                     />
+                )}
             </div>
             {taskList.map((item, index) => (
                 <Card key={index} className="mt-3">
-                    <Card.Header>
-                        {item.name} <Badge variant="success">1</Badge>
-                    </Card.Header>
                     <Card.Body>
+                        {item.status === 1 && (
+                            <del className="text-success">
+                                <strong>
+                                    {item.name}
+                                </strong>
+                            </del>
+                        )}
+
+                        {item.status === 0 && (
+                            <span>
+                                {item.name}
+                            </span>
+                        )}
                         <Card.Text>{item.description}</Card.Text>
-                        <Button variant="primary" className="mr-2">
-                            Edit
-                        </Button>
-                        <Button variant="success" className="mr-2">
-                            View
-                        </Button>
-                        <Button variant="danger" className="mr-2">
-                            Delete
-                        </Button>
                     </Card.Body>
                 </Card>
             ))}

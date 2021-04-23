@@ -18,7 +18,7 @@ class TaskController extends Controller
 
 
     /**
-     * Inbox() get all Project list
+     * Inbox() get all Task list
      *
      * @return respose
      */
@@ -30,7 +30,7 @@ class TaskController extends Controller
         return response()->json([
             "status"=> "true",
             "data"=> $data,
-            "message"=> "Project list"
+            "message"=> "Task list"
         ]);
     }
 
@@ -53,19 +53,19 @@ class TaskController extends Controller
             return response()->json([
                 "status"=> "false",
                 "data"=> null,
-                "message"=> "Project Details"
+                "message"=> "Task Details"
             ]);
         }
 
         return response()->json([
             "status"=> "true",
             "data"=> $data,
-            "message"=> "Project Details"
+            "message"=> "Task Details"
         ]);
     }
 
     /**
-     * create() new project
+     * create() new Task
      *
      * @param Request $request
      *
@@ -99,12 +99,12 @@ class TaskController extends Controller
         return response()->json([
             "status"=> "true",
             "data"=> $data,
-            "message"=> "Project store"
+            "message"=> "Task store"
         ]);
     }
 
     /**
-     * update() project find by $id
+     * update() Task find by $id
      *
      * @param Request $request
      * @param integer $id
@@ -144,12 +144,12 @@ class TaskController extends Controller
         return response()->json([
             "status"=> "true",
             "data"=> $data,
-            "message"=> "Project data update"
+            "message"=> "Task data update"
         ]);
     }
 
     /**
-     * destroy() project find by $id
+     * destroy() Task find by $id
      *
      * @param integer $id
      *
@@ -172,7 +172,7 @@ class TaskController extends Controller
         return response()->json([
             "status"=> "true",
             "data"=> $data,
-            "message"=> "Project delete"
+            "message"=> "Task delete"
         ]);
     }
 }
