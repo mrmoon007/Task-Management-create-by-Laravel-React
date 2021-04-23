@@ -1,39 +1,57 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Badge, Button, Card, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-const ProjectLisr = () => {
-    const [dataList, setDataList] = useState([]);
+import { Badge, Button, Card } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
+import { getProjectDetails } from "../../../services/ProjectService";
+const ProjectView = () => {
+    const [project, setProject] = useState({});
+    const [taskList, setTaskList] = useState([]);
+
+    let { id } = useParams();
+    console.log("route para", id);
+
     useEffect(() => {
+        getProjectDetails(id);
+    }, [id]);
+
+    const getProjectDetails = (id) => {
         axios
-            .get("http://127.0.0.1:8000/api/project")
+            .get(`http://127.0.0.1:8000/api/project/${id}`)
             .then((res) => {
                 console.log("res", res);
-                const m = res.data.data;
-                console.log("data", m);
-                setDataList(m);
+                const project = res.data.data;
+                const task = res.data.data.task;
+                console.log("project", project);
+                console.log("task", task);
+                setProject(project);
+                setTaskList(task);
             })
             .catch((err) => {
                 console.log("err", err);
             });
-    }, []);
+    };
+
+    // let { id } = useParams();
+    // console.log('route para',id)
     return (
         <>
             <div className="header-part">
                 <div className="float-left">
                     <h2>
-                        Project Lists{" "}
-                        <Badge variant="success">{dataList.length}</Badge>
+                         {project.name}
+                        <Badge variant="success">{taskList.length}</Badge>
                     </h2>
                 </div>
                 <div className="float-right">
                     <Link to="create" className="btn btn-info">
-                        + Create New
+                        + Create New Task
                     </Link>
                 </div>
                 <div className="clearfix"></div>
+                <div>
+                    {project.description}
+                </div>
             </div>
-            {dataList.map((item, index) => (
+            {taskList.map((item, index) => (
                 <Card key={index} className="mt-3">
                     <Card.Header>
                         {item.name} <Badge variant="success">1</Badge>
@@ -43,13 +61,9 @@ const ProjectLisr = () => {
                         <Button variant="primary" className="mr-2">
                             Edit
                         </Button>
-
-                        <Link to={`/project/view/${item.id}`}>
-                            <Button variant="info" className="mr-2">
-                                View
-                            </Button>
-                        </Link>
-
+                        <Button variant="success" className="mr-2">
+                            View
+                        </Button>
                         <Button variant="danger" className="mr-2">
                             Delete
                         </Button>
@@ -60,4 +74,4 @@ const ProjectLisr = () => {
     );
 };
 
-export default ProjectLisr;
+export default ProjectView;

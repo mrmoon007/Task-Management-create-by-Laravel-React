@@ -7,6 +7,7 @@ import About from "./pages/About";
 import Home from "./pages/Home";
 import ProjectCreate from "./pages/projects/ProjectCreate";
 import ProjectLisr from "./pages/projects/ProjectList";
+import ProjectView from "./pages/projects/ProjectView";
 
 function App() {
     return (
@@ -21,13 +22,16 @@ function App() {
                         <Route path="/ProjectList">
                             <ProjectLisr />
                         </Route>
+                        <Route path="/project/view/:id" exact={true} >
+                            <ProjectView />
+                        </Route>
                         <Route path="/create" >
                             <ProjectCreate />
                         </Route>
                         <Route path="/">
                             <Home />
                         </Route>
-                        
+
                     </Switch>
                 </div>
             </Router>
