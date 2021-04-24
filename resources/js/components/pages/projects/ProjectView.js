@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Card } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-
+import { updateTask } from "../../../services/ProjectService";
 
 import TaskCreate from "../tasks/TaskCreate";
-
+import ProjectEdit from "./ProjectEdit";
 
 const ProjectView = () => {
     const [project, setProject] = useState({});
     const [taskList, setTaskList] = useState([]);
     const [toggleAddTask, setToggleAddTask] = useState(false);
+    const [toggleEditProject, setToggleEditProject] = useState(false);
 
     let { id } = useParams();
-    console.log("route para", id);
+    //console.log("route para", id);
 
     useEffect(() => {
         getProjectDetails(id);
+
     }, [id]);
 
     const getProjectDetails = (id) => {
@@ -36,19 +38,39 @@ const ProjectView = () => {
     };
 
     const addTask = () => {
-        if (toggleAddTask === false) {
-            setToggleAddTask(true);
-        } else {
-            setToggleAddTask(false);
-        }
-
+        setToggleAddTask(!toggleAddTask);
+        setToggleEditProject(false);
     };
 
-    const onCompleteTask=(value)=>{
+    const onCompleteTask = (value) => {
         addTask();
-        const cloneTaskList=taskList;
+        const cloneTaskList = taskList;
         cloneTaskList.push(value);
         setTaskList(cloneTaskList);
+    };
+
+    const editProject = () => {
+        setToggleEditProject(!toggleEditProject);
+        setToggleAddTask(false);
+    };
+
+    const onCompleteProject = () => {
+        getProjectDetails(id);
+        editProject();
+    };
+
+    const toggleCompleteStatus =async(item)=>{
+
+        if(item.status===1)
+        {
+            item.status=0
+        }else{
+            item.status=1
+        }
+        console.log('item for update',item)
+        const respose = await updateTask(item.id,item);
+        getProjectDetails(id);
+
     }
     // let { id } = useParams();
     // console.log('route para',id)
@@ -56,47 +78,89 @@ const ProjectView = () => {
         <>
             <div className="header-part">
                 <div className="float-left">
-                    <h2>
-                        {project.name}
-                        <Badge variant="success">{taskList.length}</Badge>
-                    </h2>
+                    {!toggleEditProject && (
+                        <>
+                            <h2>
+                                {project.name}
+                                <Badge variant="success">
+                                    {taskList.length}
+                                </Badge>
+                            </h2>
+                            <div>{project.description}</div>
+                        </>
+                    )}
+                    {toggleEditProject && (
+                        <ProjectEdit
+                            project={project}
+                            onCompleteProject={onCompleteProject}
+                        />
+                    )}
                 </div>
                 <div className="float-right">
-                    <Link to="create" className="btn btn-success mr-2">
-                        Edit
-                    </Link>
-                    <button className="btn btn-info" onClick={() => addTask()}>
-                        {!toggleAddTask && <span>+ Add New Task</span>}
-                        {toggleAddTask && <span>Cancle</span>}
+                    <button
+                        className={`btn btn-outline-${
+                            project.status === 1 ? "success" : "info"
+                        } mr-2`}
+                        disabled
+                    >
+                        {project.status && <span>✔ Completed</span>}
+                        {!project.status && <span> Pending</span>}
+                    </button>
+                    <button
+                        className="btn btn-success mr-2"
+                        onClick={() => editProject()}
+                    >
+                        {!toggleEditProject && <span>Edit Project</span>}
+                        {toggleEditProject && <span>Cancel Editing</span>}
+                    </button>
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => addTask()}
+                    >
+                        {!toggleAddTask && <span>+ Add Task</span>}
+                        {toggleAddTask && <span>Cancel</span>}
                     </button>
                 </div>
                 <div className="clearfix"></div>
-                <div>{project.description}</div>
 
                 {toggleAddTask && (
                     <TaskCreate
-                    project_id={id}
-                    onCompleteTask={onCompleteTask}
-                     />
+                        project_id={id}
+                        onCompleteTask={onCompleteTask}
+                    />
                 )}
             </div>
             {taskList.map((item, index) => (
                 <Card key={index} className="mt-3">
                     <Card.Body>
-                        {item.status === 1 && (
-                            <del className="text-success">
-                                <strong>
-                                    {item.name}
-                                </strong>
-                            </del>
-                        )}
+                        <div className="">
+                            <div className="float-left">
+                                {item.status === 1 && (
+                                    <del className="text-success">
+                                        <strong>{item.name}</strong>
+                                    </del>
+                                )}
 
-                        {item.status === 0 && (
-                            <span>
-                                {item.name}
-                            </span>
-                        )}
-                        <Card.Text>{item.description}</Card.Text>
+                                {item.status === 0 && <span>{item.name}</span>}
+                                <div>
+                                <Card.Text>{item.description}</Card.Text>
+                                </div>
+                            </div>
+                            <div className="float-right">
+                                <button
+                                    className={`btn btn-outline-${
+                                        item.status === 1
+                                            ? "success"
+                                            : "info"
+                                    } `}
+                                    onClick={()=>toggleCompleteStatus(item)}
+                                >
+                                    {item.status && <span>✔ Mark as Completed</span>}
+                                    {!item.status && <span>  Mark as Pending</span>}
+                                </button>
+                            </div>
+                        </div>
+
                     </Card.Body>
                 </Card>
             ))}
