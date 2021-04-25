@@ -19,7 +19,7 @@ class CreateTaskModelsTable extends Migration
             $table->string('description')->nullable();
             $table->boolean('status')->default(0)->comment('0->in complete, 1->complete');
             $table->unsignedBigInteger('project_id');
-            $table->foreign('project_id')->references('id')->on('project_models');
+            $table->foreign('project_id')->references('id')->on('project_models')->onDelete('cascade');
             $table->timestamps();
         });
     }

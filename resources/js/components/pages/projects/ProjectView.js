@@ -54,7 +54,8 @@ const ProjectView = () => {
         setToggleAddTask(false);
     };
 
-    const onCompleteProject = () => {
+    const onCompleteProject = (id) => {
+        alert(id)
         getProjectDetails(id);
         editProject();
     };

@@ -25,7 +25,8 @@ const TaskCreate = (props) => {
             setName(" ");
             setDescription(" ");
             setError({});
-            props.onCompleteTask(respose.data)
+            console.log(" respose data", respose.data.id);
+            props.onCompleteTask(respose.data.id)
             // history.pushState('/projectList');
         } else {
             alert("Task is not added");

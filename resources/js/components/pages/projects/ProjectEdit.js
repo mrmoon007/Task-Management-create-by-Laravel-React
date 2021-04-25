@@ -37,7 +37,8 @@ const ProjectEdit = (props) => {
             setDescription(" ");
             setStatus('');
             setError({});
-            props.onCompleteProject();
+            console.log('project id',props.project.id)
+            props.onCompleteProject(props.project.id);
         } else {
 
             alert("Project is not updated");

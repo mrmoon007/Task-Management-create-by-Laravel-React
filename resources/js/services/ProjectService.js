@@ -27,6 +27,19 @@ export const updateProject = async(h,data) => {
 };
 
 
+export const deleteProject = async(h) => {
+
+    return  await axios
+        .delete(`http://127.0.0.1:8000/api/project/${h}`)
+        .then((res) => {
+            console.log("delete res", res);
+            return res.data;
+        })
+        .catch((err) => {
+            console.log("delete err", err);
+        });
+};
+
 export const storeNewTask = async(data) => {
     console.log("service data", data);
     return  await axios

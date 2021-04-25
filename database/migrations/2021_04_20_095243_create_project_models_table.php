@@ -19,7 +19,7 @@ class CreateProjectModelsTable extends Migration
             $table->string('description');
             $table->boolean('status')->default(0)->comment('0->in complete, 1->complete');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

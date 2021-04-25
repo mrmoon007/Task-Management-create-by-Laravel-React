@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Badge, Button, Card, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { deleteProject } from "../../../services/ProjectService";
 const ProjectLisr = () => {
 
     const [dataList, setDataList] = useState([]);
@@ -12,6 +13,10 @@ const ProjectLisr = () => {
     console.log('task item',dataList)
 
     useEffect(() => {
+        getProjectList();
+    }, []);
+
+    const getProjectList =()=>{
         axios
             .get("http://127.0.0.1:8000/api/project")
             .then((res) => {
@@ -25,7 +30,17 @@ const ProjectLisr = () => {
             .catch((err) => {
                 console.log("err", err);
             });
-    }, []);
+    }
+
+    const onProjectDelete =async(id)=>{
+        const respose = await deleteProject(id);
+        //console.log("respose.status", respose.status);
+        // if(respose.status ===true){
+        //     getProjectList();
+        // }
+        getProjectList();
+    }
+
     return (
         <>
             <div className="header-part">
@@ -59,7 +74,11 @@ const ProjectLisr = () => {
                             </Button>
                         </Link>
 
-                        <Button variant="danger" className="mr-2">
+                        <Button
+                        variant="danger"
+                        className="mr-2"
+                        onClick={()=>onProjectDelete(item.id)}
+                        >
                             Delete
                         </Button>
                     </Card.Body>
